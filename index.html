@@ -83,7 +83,7 @@
     const userInput = document.getElementById('user-input');
     const form = document.querySelector('form');
 
-    const openaiApiKey = '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';
+    const openaiApiKey = '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';
     const modelEngine = 'text-davinci-003'; // or other models like curie, babbage, etc.
 
     const openaiInstance = axios.create({
@@ -99,7 +99,7 @@
 
   const response = await openaiInstance.post('/engines/' + modelEngine + '/completions', {
     prompt: prompt,
-    max_tokens: 250, // Set max_tokens to 500 for a word limit of 500 words
+    max_tokens: 1000, // Set max_tokens to 500 for a word limit of 500 words
     n: 1,
     // stop: '\n',
   });
