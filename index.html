@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Holiday Socho AI</title>
+  <style>
+    /* Container for the chat */
+    #chat-container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Chat history styles */
+    #chat-history {
+      background-color: #f8f8f8;
+      border-radius: 4px;
+      padding: 10px;
+      min-height: 300px;
+      margin-bottom: 20px;
+      overflow-y: auto;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+    }
+
+    /* User input styles */
+    #user-input {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    /* Send button styles */
+    #user-input + button {
+      margin-top: 10px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    /* Chat message styles */
+    .chat-message {
+      margin-bottom: 10px;
+    }
+
+    .chat-message span {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .chat-message.user span {
+      color: #007bff;
+    }
+
+    .chat-message.bot span {
+      color: #28a745;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="chat-container">
+    <h1 style="text-align: center;">Holiday Socho AI</h1> 
+    <h2 style="text-align: center;">Run the Below Query</h2>
+    <h2 style="text-align: center;">Plan a 2 days hourly Trip  to Manali in Tabular Format</h2>
+    <div id="chat-history"></div>
+    <form style="text-align: center;">
+      <input type="text" id="user-input" placeholder="Type your message...">
+      <button type="submit">Send</button>
+    </form>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    const chatContainer = document.getElementById('chat-container');
+    const chatHistory = document.getElementById('chat-history');
+    const userInput = document.getElementById('user-input');
+    const form = document.querySelector('form');
+
+    const openaiApiKey = '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';
+    const modelEngine = 'text-davinci-003'; // or other models like curie, babbage, etc.
+
+    const openaiInstance = axios.create({
+      baseURL: 'https://api.openai.com/v1',
+      headers: {
+        Authorization: `Bearer ${openaiApiKey}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const generateResponse = async (message) => {
+  const prompt = `The following is a conversation with a ChatGPT. The bot will respond to your messages. \n\nUser: ${message}\nChatGPT:`;
+
+  const response = await openaiInstance.post('/engines/' + modelEngine + '/completions', {
+    prompt: prompt,
+    max_tokens: 250, // Set max_tokens to 500 for a word limit of 500 words
+    n: 1,
+    // stop: '\n',
+  });
+
+  return response.data.choices[0].text.trim();
+  var output =response.data.choices[0].text.trim();
+  console.log(output);
+  alert(output)
+      
+};
+
+      const addMessageToChat = (message, sender) => {
+        const newMessage = document.createElement('div');
+        newMessage.innerText = `${sender}: ${message}`;
+        chatHistory.appendChild(newMessage);
+      };
+
+      const sendMessage = async (event) => {
+        event.preventDefault();
+        const userInputValue = userInput.value;
+        addMessageToChat(userInputValue, 'User');
+        const response = await generateResponse(userInputValue);
+        addMessageToChat(response, 'ChatGPT');
+        userInput.value = '';
+      };
+
+      form.addEventListener('submit', sendMessage);
+    
+
+    fun();
+    console.log(output);
+
+    function getCapitalLetters(str) {
+  var capitalLetters = [];
+
+  for (var i = 0; i < str.length; i++) {
+    var char = str.charAt(i);
+
+    if (char >= "A" && char <= "Z") {
+      capitalLetters.push(char);
+    }
+  }
+
+  return capitalLetters;
+}
+
+    </script>
+  </body>
+</html>
